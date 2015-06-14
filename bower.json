@@ -1,0 +1,21 @@
+{
+  "name": "details",
+  "version": "0.0.0",
+  "authors": [
+    "Radan Ganchev <radan.ganchev@gmail.com>"
+  ],
+  "description": "Custom HTML elements playground",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0",
+    "google-code-prettify": "~1.0.4"
+  }
+}

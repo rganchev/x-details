@@ -1,0 +1,135 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+
+<script src="bower_components/google-code-prettify/bin/prettify.min.js"></script>
+<link rel="stylesheet" href="bower_components/google-code-prettify/bin/prettify.min.css" />
+
+<dom-module id="x-details">
+  <style>
+    :host {
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+
+      -ms-flex-direction: row;
+      -webkit-flex-direction: row;
+      flex-direction: row;
+
+      --x-details-summary-line-height: 18px;
+    }
+
+    .arrow-container {
+      -ms-flex: 0 0 10px;
+      -webkit-flex: 0 0 10px;
+      flex: 0 0 10px;
+
+      line-height: var(--x-details-summary-line-height);
+      margin-right: 5px;
+    }
+
+    .content-container {
+      -ms-flex: 1;
+      -webkit-flex: 1;
+      flex: 1;
+    }
+
+    #arrow {
+      display: inline-block;
+      vertical-align: baseline;
+      border-left: 10px solid black;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      height: 0;
+
+      -webkit-transition: -webkit-transform 200ms;
+      transition: transform 200ms;
+    }
+
+    #arrow.down {
+      -webkit-transform: rotate(90deg);
+      transform: rotate(90deg);
+    }
+
+    .content-container > ::content summary {
+      line-height: var(--x-details-summary-line-height);
+    }
+
+    #detailsContainer {
+      height: 0;
+      overflow: hidden;
+      opacity: 0;
+      
+      -webkit-transition: opacity 200ms;
+      transition: opacity 200ms;
+    }
+
+    #detailsContainer.expanded {
+      height: auto;
+      opacity: 1;
+    }
+  </style>
+
+  <template>
+    <div class="arrow-container">
+      <div id="arrow"></div>
+    </div>
+    <div class="content-container">
+      <content select="summary" id="summary"></content>
+      <div id="detailsContainer">
+        <content select=":not(summary)" id="details"></content>
+      </div>
+    </div>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'x-details',
+    properties: {
+      open: {
+        type: Boolean,
+        reflectToAttribute: true,
+        notify: true
+      }
+    },
+
+    ready: function () {
+      var host = this;
+
+      this.ensureSummary();
+
+      host.addEventListener('open-changed', function () {
+        host.toggleClass('down', host.open, host.$.arrow);
+        host.toggleClass('expanded', host.open, host.$.detailsContainer);
+
+        if (host.open) {
+          host.prettifyCode();
+        }
+      });
+
+      host.$.arrow.addEventListener('click', function () {
+        host.open = !host.open;
+      });
+    },
+
+    ensureSummary: function () {
+      var summaryNodes = Polymer.dom(this.$.summary).getDistributedNodes();
+      var summary = summaryNodes.filter(function (node) {
+        return node.tagName === 'SUMMARY';
+      })[0];
+
+      if (!summary) {
+        summary = document.createElement('summary');
+        summary.textContent = 'Details';
+        this.$.summary.insertBefore(summary, this.$.summary.firstChild);
+      }
+    },
+
+    prettifyCode: function () {
+      var codeContainers = this.$.detailsContainer.querySelectorAll('pre, code');
+      Array.prototype.forEach.call(codeContainers, function (code) {
+        code.classList.add('prettyprint');
+      });
+      prettyPrint();
+    }
+  });
+</script>

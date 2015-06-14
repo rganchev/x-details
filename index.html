@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HTML custom elements playground</title>
+    <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+    <link rel="import" href="bower_components/polymer/polymer.html" />
+    <link rel="import" href="x-details.html" />
+
+    <style>
+      body {
+        font-family: "RobotoDraft",Helvetica,Arial,sans-serif;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <template is="dom-bind">
+      <x-details class="prettyprint">
+        <summary>Sample <code>&lt;details&gt;</code> usage</summary>
+        <pre><code>
+  &lt;x-details&gt;
+    &lt;summary&gt;Sample summary&lt;/summary&gt;
+    &lt;p&gt;Sample description&lt;/p&gt;
+  &lt;/x-details&gt;
+        </code></pre>
+      </x-details>
+    </template>
+  </body>
+</html>
